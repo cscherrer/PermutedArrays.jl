@@ -48,3 +48,15 @@ julia> @btime permute!($tv3, p) setup=(p=randperm(n));
   473.760 ns (1 allocation: 896 bytes)
 ```
 However, the memory requirements have now doubled, and the `Vector` loses the original advantages of the packed format.
+
+## Implementation
+
+The setup is relatively simple:
+```julia
+struct PermutedVector{T, V} <: AbstractVector{T}
+    data::V
+    perm::Vector{Int}
+    iperm::Vector{Int}
+end
+```
+`perm` is the permutation to be applied implicitly to `data`, and `iperm` is its inverse.
