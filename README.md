@@ -60,3 +60,11 @@ struct PermutedVector{T, V} <: AbstractVector{T}
 end
 ```
 `perm` is the permutation to be applied implicitly to `data`, and `iperm` is its inverse.
+
+Many permutations are built from a composition of "swaps", each exchanging two elements. This is expressed in `swap!`, with a default implementation
+```julia
+function swap!(v::AbstractVector, i::Int, j::Int)
+    (v[i], v[j]) = (v[j], v[i])
+    return v
+end
+```
