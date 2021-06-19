@@ -55,4 +55,26 @@ function Base.push!(pv::PermutedVector{T}, x::T) where {T}
     return pv
 end
 
+function Base.deleteat!(pv::PermutedVector, i::Int) 
+    n = pv.perm[i]
+    deleteat!(pv.data, n)
+    
+    # Take out an element
+    deleteat!(pv.perm, i)
+    # Decrement anything above its value to fill in the gap
+    for j in eachindex(pv.perm)
+        if pv.perm[j] > n
+            pv.perm[j] -= 1
+        end
+    end
+
+    deleteat!(pv.iperm, n)
+    for j in eachindex(pv.iperm)
+        if pv.iperm[j] > i
+            pv.iperm[j] -= 1
+        end
+    end
+
+end
+
 end # module

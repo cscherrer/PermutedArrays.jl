@@ -5,11 +5,12 @@ using Random
 @testset "PermutedArrays.jl" begin
     
     function testiperm(v)
-        @test v.perm[v.iperm] == v.data
-        @test v.iperm[v.perm] == v.data
+        n = length(v)
+        @test v.perm[v.iperm] == 1:n
+        @test v.iperm[v.perm] == 1:n
     end
 
-    v =PermutedVector(1:9);
+    v =PermutedVector(collect(1:9));
 
     @testset "`permute!`" begin
         permute!(v, randperm(9));
@@ -18,6 +19,11 @@ using Random
 
     @testset "`swap!`" begin
         swap!(v, 2, 7);
+        testiperm(v)
+    end
+
+    @testset "`deleteat!`" begin
+        deleteat!(v, 3)
         testiperm(v)
     end
 
@@ -47,5 +53,7 @@ using Random
         @test sortperm(ℓ) == sortperm(x)
         testiperm(v)
     end
+
+
 
 end
