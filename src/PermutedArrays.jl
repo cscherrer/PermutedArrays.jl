@@ -47,4 +47,12 @@ end
 
 swap!(::Nothing, i::Int, j::Int) = nothing
 
+function Base.push!(pv::PermutedVector{T}, x::T) where {T}
+    push!(pv.data, x) 
+    n = length(pv.data)
+    push!(pv.perm, n)
+    push!(pv.iperm, n)
+    return pv
+end
+
 end # module
